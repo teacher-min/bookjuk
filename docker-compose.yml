@@ -1,0 +1,38 @@
+volumes:
+  mysql_vol:
+services:
+  db:
+    container_name: mysql-container
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=${.env환경변수명}
+      - MYSQL_DATABASE=${}
+      - MYSQL_USER=${}
+      - MYSQL_PASSWORD=${}
+      - TZ=${}
+    volumes:
+      - mysql_vol:/var/lib/mysql
+    ports:
+      - 3306:3306
+  backend:
+    container_name: backend-container
+    build: ./backend
+    environment:
+      - WAIT_HOSTS=db:3306
+      - SPRING_DATABASE_URL=jdbc:mysql://db:3306/${}
+      - SPRING_DATABASE_USERNAME=${}
+      - SPRING_DATABASE_PASSWORD=${}
+      - ...
+    depends_on:
+      - db
+    ports:
+      - 8080:8080
+  frontend:
+    container_name: frontend-container
+    build: ./frontend
+    environment:
+      - WAIT_HOSTS=backend:8080
+    depends_on:
+      - backend
+    ports:
+      - 80:80
