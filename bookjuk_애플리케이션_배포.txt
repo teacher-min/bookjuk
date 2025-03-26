@@ -13,7 +13,7 @@
 
 
 
-2. 애플리케이션 github에 .gitignore만 push:
+2. github에 .gitignore만 push:
   1) bookjuk $ git add .gitignore
   2) bookjuk $ git add ./**/.gitignore
 
